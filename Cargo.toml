@@ -1,0 +1,55 @@
+[package]
+name = "burn_gaussian_splatting"
+description = "burn gaussian splatting render pipeline plugin"
+version = "0.1.0"
+edition = "2021"
+authors = ["mosure <mitchell@mosure.me>"]
+license = "MIT"
+keywords = ["burn", "gaussian-splatting", "render-pipeline", "ply"]
+categories = ["computer-vision", "graphics", "rendering", "rendering::data-formats"]
+homepage = "https://github.com/mosure/burn_gaussian_splatting"
+repository = "https://github.com/mosure/burn_gaussian_splatting"
+readme = "README.md"
+exclude = [".devcontainer", ".github", "docs", "dist", "build", "assets", "credits"]
+
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1"
+wasm-bindgen = "0.2"
+
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'Document',
+  'Element',
+  'HtmlElement',
+  'Node',
+  'Window',
+]
+
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+opt-level = 3
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+
+
+[lib]
+path = "src/lib.rs"
